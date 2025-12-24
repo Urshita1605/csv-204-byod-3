@@ -1,0 +1,19 @@
+---
+- name: Install Splunk
+  hosts: splunk
+  become: yes
+
+  tasks:
+    - name: Download Splunk
+      get_url:
+        url: https://download.splunk.com/products/splunk/releases/9.1.0/linux/splunk-9.1.0-1c86ca0bacc3-Linux-x86_64.tgz
+        dest: /tmp/splunk.tgz
+
+    - name: Extract Splunk
+      unarchive:
+        src: /tmp/splunk.tgz
+        dest: /opt
+        remote_src: yes
+
+    - name: Start Splunk
+      command: /opt/splunk/bin/splunk start --accept-license --answer-yes --no-prompt
