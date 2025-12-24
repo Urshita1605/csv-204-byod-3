@@ -1,0 +1,15 @@
+---
+- name: Test Splunk Service
+  hosts: splunk
+  become: yes
+
+  tasks:
+    - name: Check Splunk Status
+      command: /opt/splunk/bin/splunk status
+      register: splunk_status
+      ignore_errors: yes
+
+    - name: Fail if Splunk is not running
+      fail:
+        msg: "Splunk is NOT running"
+      when: "'running' not in splunk_status.stdout"
